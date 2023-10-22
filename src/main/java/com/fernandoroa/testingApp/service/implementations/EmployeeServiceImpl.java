@@ -6,6 +6,7 @@ import com.fernandoroa.testingApp.repositories.EmployeeRepository;
 import com.fernandoroa.testingApp.service.IEmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return  employeeRepository.save(employee);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Employee> getAllEmployee() {
         return employeeRepository.findAll();

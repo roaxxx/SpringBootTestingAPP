@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
@@ -68,14 +67,28 @@ public class EmployeeRepositoryTest {
         assertThat(employeeList.size()).isEqualTo(2);
     }
 
+    @DisplayName("Test to delete an employee")
+    @Test
+    void testDeleteEmployee(){
+        //Given
+        employeeRepository.save(employee);
+
+        //When
+        employeeRepository.deleteById(employee.getId());
+
+        Optional<Employee> employee1 = employeeRepository.findById(employee.getId());
+
+        assertThat(employee1).isEmpty();
+    }
+
     @DisplayName("Test to get an employee by Id")
     @Test
     void testToGetEmployeeById(){
         // Given
-        employeeRepository.save(employee);
+        Employee employeeDB = employeeRepository.save(employee);
 
         //When
-        Optional<Employee> employee1 = employeeRepository.findById(1L);
+        Optional<Employee> employee1 = employeeRepository.findById(employeeDB.getId());
 
         //Then
         assertThat(employee1.isPresent()).isEqualTo(true);
@@ -83,6 +96,7 @@ public class EmployeeRepositoryTest {
     }
 
     @DisplayName("Test to update and employee")
+    @Test
     void testUpdateEmployee() {
         //Given
         employeeRepository.save(employee);
@@ -97,5 +111,16 @@ public class EmployeeRepositoryTest {
         //Then
         assertThat(updatedEmployee.getEmail()).isEqualTo("rwillian@jdc.edu.co");
         assertThat(updatedEmployee.getName()).isEqualTo("William Fernando");
+    }
+    @DisplayName("Test to find an employee by email")
+    @Test
+    void findEmployeeByEmail() {
+        //Given
+        employeeRepository.save(employee);
+
+        //When
+        Employee employee1 = employeeRepository.findByEmail(employee.getEmail()).get();
+
+        assertThat(employee1.getName()).isEqualTo("Jose");
     }
 }
