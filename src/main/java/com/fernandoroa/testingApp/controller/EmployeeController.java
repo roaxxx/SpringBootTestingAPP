@@ -23,7 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> listEmployees() {
         return employeeService.getAllEmployee();
     }
@@ -47,8 +47,7 @@ public class EmployeeController {
                     savedEmployee.setName(employee.getName());
                     savedEmployee.setLastname(employee.getLastname());
                     savedEmployee.setEmail(employee.getEmail());
-
-                    Employee updatedEmployee = this.employeeService.saveEmployee(savedEmployee);
+                    Employee updatedEmployee = this.employeeService.updateEmployee(savedEmployee);
                     return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
                 })
                 .orElseGet( () -> ResponseEntity.notFound().build() );
